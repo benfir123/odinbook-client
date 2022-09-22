@@ -1,10 +1,19 @@
 import Comment from "./Comment";
 
-const CommentContainer = () => {
+const CommentContainer = ({ comments, handleCommentLike, user }) => {
   return (
-    <div>
-      <Comment />
-    </div>
+    <>
+      {comments.map((comment) => {
+        return (
+          <Comment
+            comment={comment}
+            key={comment._id}
+            handleCommentLike={handleCommentLike}
+            user={user}
+          />
+        );
+      })}
+    </>
   );
 };
 

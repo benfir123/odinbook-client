@@ -2,33 +2,56 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
+import Friends from "./pages/Friends";
+import Account from "./pages/Account";
 
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { useState } from "react";
+import Newsfeed from "./pages/Newsfeed";
+import axios from "./utils/axios";
 
 function App() {
-  const [token, setToken] = useState(
-    JSON.parse(localStorage.getItem("token"))
-      ? JSON.parse(localStorage.getItem("token"))
+  //get previously saved user from local storage
+  const [user, setUser] = useState(
+    localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
       : null
   );
 
+  //check if user's token is still valid
+  if (user) {
+    axios.defaults.headers.common["Authorization"] = user.token;
+    axios
+      .get("/users/info")
+      .then((result) => {
+        return;
+      })
+      .catch(function (error) {
+        localStorage.clear();
+        delete axios.defaults.headers.common["Authorization"];
+        setUser(null);
+      });
+  }
+
   return (
     <div className="App">
+      <Dashboard user={user} setUser={setUser} />
       <BrowserRouter>
         <Routes>
           <Route
             path="/signin"
-            element={<SignIn token={token} setToken={setToken} />}
+            element={<SignIn user={user} setUser={setUser} />}
           />
-          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signup" element={<SignUp user={user} />} />
           <Route
             path="/"
-            element={<Dashboard token={token} setToken={setToken} />}
+            element={<Newsfeed user={user} setUser={setUser} />}
           />
+          <Route path="/friends" element={<Friends user={user} />} />
+          <Route path="/account" element={<Account user={user} />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -12,7 +12,12 @@ import {
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-const FriendList = () => {
+const FriendList = ({
+  friends,
+  friendRequests,
+  handleAcceptRequest,
+  handleDeclineRequest,
+}) => {
   return (
     <div>
       <List
@@ -21,20 +26,37 @@ const FriendList = () => {
         subheader={<ListSubheader>Friend Requests</ListSubheader>}
       >
         <div>
-          <ListItem>
-            <ListItemIcon>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemIcon>
-            <ListItemText primary="Ben Chanapai" />
-            <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="comments">
-                <CheckCircleIcon sx={{ color: "#15803d" }} />
-              </IconButton>
-              <IconButton edge="end" aria-label="comments">
-                <CancelIcon sx={{ color: "#991b1b" }} />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
+          {friendRequests.length > 0
+            ? friendRequests.map((friend) => {
+                return (
+                  <ListItem key={friend._id}>
+                    <ListItemIcon>
+                      <Avatar
+                        alt={friend.full_name}
+                        src={friend.profile_pic_url}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary={friend.full_name} />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        edge="end"
+                        aria-label="comments"
+                        onClick={() => handleAcceptRequest(friend._id)}
+                      >
+                        <CheckCircleIcon sx={{ color: "#15803d" }} />
+                      </IconButton>
+                      <IconButton
+                        edge="end"
+                        aria-label="comments"
+                        onClick={() => handleDeclineRequest(friend._id)}
+                      >
+                        <CancelIcon sx={{ color: "#991b1b" }} />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              })
+            : "No friend requests yet"}
           <Divider />
         </div>
       </List>
@@ -44,12 +66,21 @@ const FriendList = () => {
         subheader={<ListSubheader>Friends</ListSubheader>}
       >
         <div>
-          <ListItem>
-            <ListItemIcon>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemIcon>
-            <ListItemText primary="Ben Chanapai" />
-          </ListItem>
+          {friends.length > 0
+            ? friends.map((friend) => {
+                return (
+                  <ListItem key={friend._id}>
+                    <ListItemIcon>
+                      <Avatar
+                        alt={friend.full_name}
+                        src={friend.profile_pic_url}
+                      />
+                    </ListItemIcon>
+                    <ListItemText primary={friend.full_name} />
+                  </ListItem>
+                );
+              })
+            : "No friends yet"}
           <Divider />
         </div>
       </List>

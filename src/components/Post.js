@@ -4,7 +4,13 @@ import CommentIcon from "@mui/icons-material/Comment";
 import CommentContainer from "./CommentContainer";
 import NewCommentForm from "./NewCommentForm";
 
-const Post = () => {
+const Post = ({
+  post,
+  user,
+  handlePostLike,
+  handleCommentSubmit,
+  handleCommentLike,
+}) => {
   return (
     <Paper
       sx={{
@@ -15,23 +21,21 @@ const Post = () => {
       }}
     >
       <div style={{ display: "flex", gap: 15 }}>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        <Avatar alt={post.author.full_name} src={post.author.profile_pic_url} />
         <div>
-          <Typography variant="body1">Ben Chanapai</Typography>
-          <Typography variant="body2">0 minutes ago</Typography>
+          <Typography variant="body1">{post.author.full_name}</Typography>
+          <Typography variant="body2">{post.added_formatted}</Typography>
         </div>
       </div>
       <div>
-        <Typography variant="body1">
-          Lorem ipsum, this is where the post content goes. Lorem ipsum, this is
-          where the post content goes. Lorem ipsum, this is where the post
-          content goes.
-        </Typography>
+        <Typography variant="body1">{post.text}</Typography>
       </div>
       <div>
         <img src="test" alt="" />
       </div>
-      <Typography variant="body2">10 likes</Typography>
+      <Typography variant="body2">
+        {post.likes.length === 1 ? "1 like" : `${post.likes.length} likes`}
+      </Typography>
       <Divider />
       <div style={{ margin: 16, display: "flex", gap: 22 }}>
         <Button
@@ -39,7 +43,10 @@ const Post = () => {
           startIcon={<ThumbUpIcon />}
           sx={{
             width: "calc(50% - 20px)",
+            color: !post.likes.includes(user.id) ? "gray" : "",
+            border: !post.likes.includes(user.id) ? "1px lightgray solid" : "",
           }}
+          onClick={() => handlePostLike(post.id)}
         >
           Like
         </Button>
@@ -48,14 +55,24 @@ const Post = () => {
           startIcon={<CommentIcon />}
           sx={{
             width: "calc(50%)",
+            color: "gray",
+            border: "1px lightgray solid",
           }}
         >
           Comment
         </Button>
       </div>
       <Divider />
-      <CommentContainer />
-      <NewCommentForm />
+      <CommentContainer
+        comments={post.comments}
+        handleCommentLike={handleCommentLike}
+        user={user}
+      />
+      <NewCommentForm
+        user={user}
+        handleCommentSubmit={handleCommentSubmit}
+        post={post}
+      />
     </Paper>
   );
 };

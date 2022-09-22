@@ -12,7 +12,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "../utils/axios";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
 
 function Copyright(props) {
@@ -35,7 +35,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignUp() {
+export default function SignUp({ user }) {
   let navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
@@ -53,6 +53,13 @@ export default function SignUp() {
 
   const [error, setError] = useState(null);
 
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+      return;
+    }
+  }, [user, navigate]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -65,7 +72,7 @@ export default function SignUp() {
         password_confirmation: data.get("password_confirmation"),
       })
       .then((result) => {
-        navigate("/signin", { message: result.data.message });
+        navigate("/signin", { state: { message: result.data.message } });
       })
       .catch(function (error) {
         setFirstNameError("");

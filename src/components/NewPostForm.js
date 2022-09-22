@@ -1,7 +1,14 @@
 import { Paper, Avatar, TextField, Button } from "@mui/material";
 import ImageIcon from "@mui/icons-material/Image";
 
-const NewPostForm = () => {
+const NewPostForm = ({
+  user,
+  postText,
+  setPostText,
+  postTextError,
+  setPostTextError,
+  handlePostSubmit,
+}) => {
   return (
     <Paper
       sx={{
@@ -12,17 +19,21 @@ const NewPostForm = () => {
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
-        <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        <Avatar alt={user.full_name} src={user.profile_pic_url} />
         <TextField
-          placeholder={`What's on your mind, Ben?`}
+          placeholder={`What's on your mind, ${user.first_name}?`}
           variant="outlined"
           sx={{ flex: 1 }}
+          onChange={(e) => setPostText(e.target.value)}
+          value={postText}
+          helperText={postTextError}
+          error={postTextError ? true : false}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handlePostSubmit(postText);
+            }
+          }}
         />
-      </div>
-      <div style={{ marginTop: 15 }}>
-        <Button variant="outlined" startIcon={<ImageIcon />} fullWidth>
-          Add Image
-        </Button>
       </div>
     </Paper>
   );

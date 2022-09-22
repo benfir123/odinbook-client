@@ -18,6 +18,8 @@ import axios from "../utils/axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 import Alert from "@mui/material/Alert";
+import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -27,10 +29,11 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      {"Copyright © "}
+      {"Made with ❤️ by "}
       <Link color="inherit" href="https://github.com/benfir123/odinbook-client">
         Ben Chanapai
-      </Link>{" "}
+      </Link>
+      {" © "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -39,14 +42,40 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn({ token, setToken, navigation }) {
+export default function SignIn({ user, setUser }) {
   let navigate = useNavigate();
-  const { message } = useLocation();
+  const { state } = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [error, setError] = useState(null);
+  const [loadingTestUser, setLoadingTestUser] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+      return;
+    }
+  }, [user, navigate]);
+
+  const handleTestDrive = () => {
+    setLoadingTestUser(true);
+    axios
+      .post("/auth/testdrive")
+      .then((result) => {
+        const user = { ...result.data.user, token: result.data.token };
+        console.log(user);
+        axios.defaults.headers.common["Authorization"] = user.token;
+        setUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+        setLoadingTestUser(false);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+      });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -57,8 +86,10 @@ export default function SignIn({ token, setToken, navigation }) {
         password: data.get("password"),
       })
       .then((result) => {
-        axios.defaults.headers.common["Authorization"] = result.data.token;
-        setToken(result.data.token);
+        const user = { ...result.data.user, token: result.data.token };
+        axios.defaults.headers.common["Authorization"] = user.token;
+        localStorage.setItem("user", JSON.stringify(user));
+        setUser(user);
         navigate("/");
       })
       .catch(function (error) {
@@ -73,7 +104,7 @@ export default function SignIn({ token, setToken, navigation }) {
             setPasswordError(error.response.data.errors.password.msg);
           }
         } else {
-          setError(error.response.request.statusText);
+          setError(error.response.data.message);
         }
       });
   };
@@ -96,13 +127,13 @@ export default function SignIn({ token, setToken, navigation }) {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          {message && <Alert severity="success">{message}</Alert>}
           <Box
             component="form"
             onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
+            {state ? <Alert severity="success">{state.message}</Alert> : null}
             <TextField
               margin="normal"
               required
@@ -136,6 +167,22 @@ export default function SignIn({ token, setToken, navigation }) {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
+            {loadingTestUser && (
+              <Typography
+                variant="body2"
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: 4,
+                  mt: 2,
+                }}
+              >
+                <CircularProgress />
+                Please wait a moment while we create a test user for you...
+              </Typography>
+            )}
             <Button
               type="submit"
               fullWidth
@@ -152,6 +199,7 @@ export default function SignIn({ token, setToken, navigation }) {
                 backgroundColor: "#38bdf8",
                 color: "white",
               }}
+              onClick={handleTestDrive}
             >
               Test Service as Guest
             </Button>
