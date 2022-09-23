@@ -108,9 +108,11 @@ function DashboardContent({ user, setUser }) {
                 >
                   Odinbook
                 </Typography>
-                <IconButton>
-                  <Avatar alt={user.full_name} src={user.profile_pic_url} />
-                </IconButton>
+                <Link href="/account">
+                  <IconButton>
+                    <Avatar alt={user.full_name} src={user.profile_pic_url} />
+                  </IconButton>
+                </Link>
               </Toolbar>
             </AppBar>
             <Drawer variant="permanent" open={open}>
@@ -184,6 +186,6 @@ function DashboardContent({ user, setUser }) {
   );
 }
 
-export default function Dashboard({ user, setUser, setToken }) {
+export default function Nav({ user, setUser }) {
   return <DashboardContent user={user} setUser={setUser} />;
 }

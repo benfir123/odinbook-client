@@ -1,32 +1,14 @@
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { Button, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Card, Paper, Avatar } from "@mui/material";
+import { Card, Avatar } from "@mui/material";
 import axios from "../utils/axios";
 import { PersonAdd } from "@mui/icons-material";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://github.com/benfir123/odinbook-client">
-        Ben Chanapai
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Copyright from "../components/Copyright";
 
 const Friends = ({ user }) => {
   let navigate = useNavigate();
@@ -36,7 +18,6 @@ const Friends = ({ user }) => {
   useEffect(() => {
     if (!user) {
       navigate("/signin");
-      return;
     }
   }, [user, navigate]);
 
@@ -92,7 +73,7 @@ const Friends = ({ user }) => {
           (item) => item.id === updatedUser.id
         );
         const updatedRequests = updatedUsers[relIndex].friend_requests.filter(
-          (item) => item != user.id
+          (item) => item !== user.id
         );
         updatedUsers[relIndex].friend_requests = updatedRequests;
         setUsers(updatedUsers);
@@ -128,25 +109,31 @@ const Friends = ({ user }) => {
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
-          {friends.length > 0
-            ? friends.map((user, index) => (
-                <Grid item xs={4} sm={4} md={4} key={index}>
-                  <Card
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 4,
-                    }}
-                  >
-                    <Avatar alt={user.full_name} src={user.profile_pic_url} />
-                    <div>
-                      <Typography variant="body1">{user.full_name}</Typography>
-                    </div>
-                  </Card>
-                </Grid>
-              ))
-            : null}
+          {friends.length > 0 ? (
+            friends.map((user, index) => (
+              <Grid item xs={4} sm={4} md={4} key={index}>
+                <Card
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 4,
+                  }}
+                >
+                  <Avatar alt={user.full_name} src={user.profile_pic_url} />
+                  <div>
+                    <Typography variant="body1">{user.full_name}</Typography>
+                  </div>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={4} sm={4} md={4}>
+              <Typography variant="body2" color="text.secondary" align="left">
+                No friends yet
+              </Typography>
+            </Grid>
+          )}
         </Grid>
         <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
           Users
@@ -157,7 +144,7 @@ const Friends = ({ user }) => {
           spacing={{ xs: 2, md: 3 }}
           columns={{ xs: 4, sm: 8, md: 12, lg: 12 }}
         >
-          {users.length > 0
+          {user && users.length > 0
             ? users.map((relUser, index) => (
                 <Grid item xs={4} sm={8} md={6} lg={4} key={index}>
                   <Card
@@ -199,7 +186,7 @@ const Friends = ({ user }) => {
               ))
             : null}
         </Grid>
-        <Copyright sx={{ pt: 4 }} />
+        <Copyright />
       </Container>
     </Box>
   );

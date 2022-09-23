@@ -1,12 +1,10 @@
-import { Paper, Avatar, TextField, Button } from "@mui/material";
-import ImageIcon from "@mui/icons-material/Image";
+import { Paper, Avatar, TextField } from "@mui/material";
 
 const NewPostForm = ({
   user,
   postText,
   setPostText,
   postTextError,
-  setPostTextError,
   handlePostSubmit,
 }) => {
   return (

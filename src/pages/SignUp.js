@@ -14,24 +14,7 @@ import axios from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Alert from "@mui/material/Alert";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://github.com/benfir123/odinbook-client">
-        Ben Chanapai
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Copyright from "../components/Copyright";
 
 const theme = createTheme();
 
@@ -224,7 +207,7 @@ export default function SignUp({ user }) {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        <Copyright />
       </Container>
     </ThemeProvider>
   );

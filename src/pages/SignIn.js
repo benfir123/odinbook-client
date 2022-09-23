@@ -20,25 +20,7 @@ import { useState } from "react";
 import Alert from "@mui/material/Alert";
 import { useEffect } from "react";
 import { CircularProgress } from "@mui/material";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Made with ❤️ by "}
-      <Link color="inherit" href="https://github.com/benfir123/odinbook-client">
-        Ben Chanapai
-      </Link>
-      {" © "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Copyright from "../components/Copyright";
 
 const theme = createTheme();
 
@@ -65,7 +47,6 @@ export default function SignIn({ user, setUser }) {
       .post("/auth/testdrive")
       .then((result) => {
         const user = { ...result.data.user, token: result.data.token };
-        console.log(user);
         axios.defaults.headers.common["Authorization"] = user.token;
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
@@ -200,6 +181,7 @@ export default function SignIn({ user, setUser }) {
                 color: "white",
               }}
               onClick={handleTestDrive}
+              disabled={loadingTestUser ? true : false}
             >
               Test Service as Guest
             </Button>
@@ -235,7 +217,7 @@ export default function SignIn({ user, setUser }) {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright />
       </Container>
     </ThemeProvider>
   );

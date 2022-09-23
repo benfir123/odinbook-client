@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Dashboard from "./pages/Dashboard";
+import Nav from "./components/Nav";
 import Friends from "./pages/Friends";
 import Account from "./pages/Account";
 
@@ -38,7 +38,7 @@ function App() {
 
   return (
     <div className="App">
-      <Dashboard user={user} setUser={setUser} />
+      <Nav user={user} setUser={setUser} />
       <BrowserRouter>
         <Routes>
           <Route

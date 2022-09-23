@@ -8,27 +8,8 @@ import { useEffect, useState } from "react";
 import axios from "../utils/axios";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Link from "@mui/material/Link";
-import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://github.com/benfir123/odinbook-client">
-        Ben Chanapai
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import Copyright from "../components/Copyright";
 
 const Newsfeed = ({ user }) => {
   let navigate = useNavigate();
@@ -57,10 +38,12 @@ const Newsfeed = ({ user }) => {
   }, [user, navigate]);
 
   useEffect(() => {
-    axios.get(`/users/${user.id}`).then((results) => {
-      setFriends(results.data.user.friends);
-      setFriendRequests(results.data.user.friend_requests);
-    });
+    if (user) {
+      axios.get(`/users/${user.id}`).then((results) => {
+        setFriends(results.data.user.friends);
+        setFriendRequests(results.data.user.friend_requests);
+      });
+    }
   }, [user]);
 
   const sortPosts = (arr) => {
@@ -92,12 +75,12 @@ const Newsfeed = ({ user }) => {
   const handlePostLike = (postId) => {
     axios.put(`/posts/${postId}/like`).then((result) => {
       const updatedPosts = [...posts];
-      const relPostInd = updatedPosts.findIndex((post) => post._id == postId);
+      const relPostInd = updatedPosts.findIndex((post) => post._id === postId);
       if (!updatedPosts[relPostInd].likes.includes(user.id)) {
         updatedPosts[relPostInd].likes.push(user.id);
       } else {
         updatedPosts[relPostInd].likes = updatedPosts[relPostInd].likes.filter(
-          (id) => id != user.id
+          (id) => id !== user.id
         );
       }
       setPosts(sortPosts(updatedPosts));
@@ -111,7 +94,9 @@ const Newsfeed = ({ user }) => {
       })
       .then((result) => {
         const updatedPosts = [...posts];
-        const relPostInd = updatedPosts.findIndex((post) => post._id == postId);
+        const relPostInd = updatedPosts.findIndex(
+          (post) => post._id === postId
+        );
         updatedPosts[relPostInd].comments = [
           ...updatedPosts[relPostInd].comments,
           result.data.comment,
@@ -123,9 +108,9 @@ const Newsfeed = ({ user }) => {
   const handleCommentLike = (postId, commentId) => {
     axios.put(`/posts/${postId}/comments/${commentId}/like`).then((result) => {
       const updatedPosts = [...posts];
-      const relPostInd = updatedPosts.findIndex((post) => post._id == postId);
+      const relPostInd = updatedPosts.findIndex((post) => post._id === postId);
       const relCommInd = updatedPosts[relPostInd].comments.findIndex(
-        (comm) => comm._id == commentId
+        (comm) => comm._id === commentId
       );
       if (
         !updatedPosts[relPostInd].comments[relCommInd].likes.includes(user.id)
@@ -134,7 +119,7 @@ const Newsfeed = ({ user }) => {
       } else {
         updatedPosts[relPostInd].comments[relCommInd].likes = updatedPosts[
           relPostInd
-        ].comments[relCommInd].likes.filter((id) => id != user.id);
+        ].comments[relCommInd].likes.filter((id) => id !== user.id);
       }
       setPosts(sortPosts(updatedPosts));
     });
@@ -149,7 +134,7 @@ const Newsfeed = ({ user }) => {
         setFriends(result.data.user.friends);
 
         const updatedFriendReqs = friendRequests.filter(
-          (item) => item._id != id
+          (item) => item._id !== id
         );
         setFriendRequests(updatedFriendReqs);
       });
@@ -164,7 +149,7 @@ const Newsfeed = ({ user }) => {
       })
       .then((result) => {
         const updatedFriendReqs = friendRequests.filter(
-          (item) => item._id != id
+          (item) => item._id !== id
         );
         setFriendRequests(updatedFriendReqs);
       });
@@ -188,48 +173,47 @@ const Newsfeed = ({ user }) => {
       }}
     >
       <Toolbar />
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
-          {/* Chart */}
-          <Grid item xs={12} md={8} lg={8.5}>
-            <NewPostForm
-              user={user}
-              postText={postText}
-              setPostText={setPostText}
-              postTextError={postTextError}
-              setPostTextError={setPostTextError}
-              handlePostSubmit={handlePostSubmit}
-              postText={postText}
-            />
-            <PostContainer
-              posts={posts}
-              loadingPosts={loadingPosts}
-              user={user}
-              handlePostLike={handlePostLike}
-              handleCommentSubmit={handleCommentSubmit}
-              handleCommentLike={handleCommentLike}
-            />
-          </Grid>
-          {/* Recent Deposits */}
-          <Grid item xs={12} md={4} lg={3.5}>
-            <Paper
-              sx={{
-                p: 2,
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <FriendList
-                friends={friends}
-                friendRequests={friendRequests}
-                handleAcceptRequest={handleAcceptRequest}
-                handleDeclineRequest={handleDeclineRequest}
+      {user && (
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={8} lg={8.5}>
+              <NewPostForm
+                user={user}
+                postText={postText}
+                setPostText={setPostText}
+                postTextError={postTextError}
+                setPostTextError={setPostTextError}
+                handlePostSubmit={handlePostSubmit}
               />
-            </Paper>
+              <PostContainer
+                posts={posts}
+                loadingPosts={loadingPosts}
+                user={user}
+                handlePostLike={handlePostLike}
+                handleCommentSubmit={handleCommentSubmit}
+                handleCommentLike={handleCommentLike}
+              />
+            </Grid>
+            <Grid item xs={12} md={4} lg={3.5}>
+              <Paper
+                sx={{
+                  p: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <FriendList
+                  friends={friends}
+                  friendRequests={friendRequests}
+                  handleAcceptRequest={handleAcceptRequest}
+                  handleDeclineRequest={handleDeclineRequest}
+                />
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
-        <Copyright sx={{ pt: 4 }} />
-      </Container>
+          <Copyright />
+        </Container>
+      )}
     </Box>
   );
 };
