@@ -1,8 +1,8 @@
 {
+  "homepage": "http://benfir123.github.io/odinbook-client",
   "name": "odinbook-client",
   "version": "0.1.0",
-  "private": false,
-  "homepage": "http://benfir123.github.io/odinbook-client",
+  "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
