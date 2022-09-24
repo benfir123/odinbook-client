@@ -41,6 +41,21 @@ export default function SignIn({ user, setUser }) {
     }
   }, [user, navigate]);
 
+  const handleFBLogin = () => {
+    axios
+      .get("/auth/facebook")
+      .then((result) => {
+        const user = { ...result.data.user, token: result.data.token };
+        axios.defaults.headers.common["Authorization"] = user.token;
+        localStorage.setItem("user", JSON.stringify(user));
+        setUser(user);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+      });
+  };
+
   const handleTestDrive = () => {
     setLoadingTestUser(true);
     axios
@@ -188,7 +203,7 @@ export default function SignIn({ user, setUser }) {
             <FacebookLogin
               appId="412944714298001"
               onSuccess={(response) => {
-                console.log("Login Success!", response);
+                handleFBLogin();
               }}
               onFail={(error) => {
                 console.log("Login Failed!", error);
