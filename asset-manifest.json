@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/odinbook-client/static/css/main.e34bc2b0.css",
-    "main.js": "/odinbook-client/static/js/main.6bd867e1.js",
+    "main.js": "/odinbook-client/static/js/main.d71f988e.js",
     "static/media/roboto-all-500-normal.woff": "/odinbook-client/static/media/roboto-all-500-normal.0ab669b7a0d19b178f57.woff",
     "static/media/roboto-all-700-normal.woff": "/odinbook-client/static/media/roboto-all-700-normal.a457fde362a540fcadff.woff",
     "static/media/roboto-all-400-normal.woff": "/odinbook-client/static/media/roboto-all-400-normal.c5d001fa922fa66a147f.woff",
@@ -36,10 +36,10 @@
     "static/media/roboto-greek-ext-700-normal.woff2": "/odinbook-client/static/media/roboto-greek-ext-700-normal.bd9854c751441ccc1a70.woff2",
     "index.html": "/odinbook-client/index.html",
     "main.e34bc2b0.css.map": "/odinbook-client/static/css/main.e34bc2b0.css.map",
-    "main.6bd867e1.js.map": "/odinbook-client/static/js/main.6bd867e1.js.map"
+    "main.d71f988e.js.map": "/odinbook-client/static/js/main.d71f988e.js.map"
   },
   "entrypoints": [
     "static/css/main.e34bc2b0.css",
-    "static/js/main.6bd867e1.js"
+    "static/js/main.d71f988e.js"
   ]
 }
