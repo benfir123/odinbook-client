@@ -39,7 +39,7 @@ function App() {
   return (
     <div className="App">
       <Nav user={user} setUser={setUser} />
-      <BrowserRouter>
+      <BrowserRouter basename="/odinbook-client">
         <Routes>
           <Route
             path="/signin"
