@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Nav from "./components/Nav";
@@ -39,7 +39,7 @@ function App() {
   return (
     <div className="App">
       <Nav user={user} setUser={setUser} />
-      <BrowserRouter basename="/odinbook-client">
+      <HashRouter>
         <Routes>
           <Route
             path="/signin"
@@ -53,7 +53,7 @@ function App() {
           <Route path="/friends" element={<Friends user={user} />} />
           <Route path="/account" element={<Account user={user} />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }
