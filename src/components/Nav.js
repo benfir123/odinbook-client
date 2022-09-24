@@ -108,7 +108,7 @@ function DashboardContent({ user, setUser }) {
                 >
                   Odinbook
                 </Typography>
-                <Link href="/account">
+                <Link href="/odinbook-client/#/account">
                   <IconButton>
                     <Avatar alt={user.full_name} src={user.profile_pic_url} />
                   </IconButton>
@@ -132,7 +132,7 @@ function DashboardContent({ user, setUser }) {
               <List component="nav">
                 <React.Fragment>
                   <Link
-                    href="/"
+                    href="/odinbook-client/#"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <ListItemButton>
@@ -143,7 +143,7 @@ function DashboardContent({ user, setUser }) {
                     </ListItemButton>
                   </Link>
                   <Link
-                    href="/friends"
+                    href="/odinbook-client/#/friends"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <ListItemButton>
@@ -154,7 +154,7 @@ function DashboardContent({ user, setUser }) {
                     </ListItemButton>
                   </Link>
                   <Link
-                    href="/account"
+                    href="/odinbook-client/#/account"
                     style={{ textDecoration: "none", color: "inherit" }}
                   >
                     <ListItemButton>
