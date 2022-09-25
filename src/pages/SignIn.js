@@ -42,7 +42,10 @@ export default function SignIn({ user, setUser }) {
   }, [user, navigate]);
 
   const handleFBLogin = () => {
-    window.open("/auth/facebook/callback", "_self");
+    window.open(
+      "https://odinbook-ben.herokuapp.com/api/auth/facebook/callback",
+      "_self"
+    );
   };
 
   const handleTestDrive = () => {
