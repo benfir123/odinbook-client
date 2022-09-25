@@ -52,7 +52,7 @@ export default function SignIn({ user, setUser }) {
         token: `Bearer ${accessToken}`,
         id: result.data.user.id,
         _id: result.data.user._id,
-        profilePicUrl: result.data.user.profilePicUrl,
+        profile_pic_url: result.data.user.profile_pic_url,
         facebookId: result.data.user.facebookId,
       };
       setUser(user);
