@@ -42,18 +42,7 @@ export default function SignIn({ user, setUser }) {
   }, [user, navigate]);
 
   const handleFBLogin = () => {
-    axios
-      .get("/auth/facebook")
-      .then((result) => {
-        const user = { ...result.data.user, token: result.data.token };
-        axios.defaults.headers.common["Authorization"] = user.token;
-        localStorage.setItem("user", JSON.stringify(user));
-        setUser(user);
-        navigate("/");
-      })
-      .catch((error) => {
-        console.log(error.response.data.message);
-      });
+    window.open("/auth/facebook/callback", "_self");
   };
 
   const handleTestDrive = () => {
