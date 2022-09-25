@@ -41,11 +41,24 @@ export default function SignIn({ user, setUser }) {
     }
   }, [user, navigate]);
 
-  const handleFBLogin = () => {
-    window.open(
-      "https://odinbook-ben.herokuapp.com/api/auth/facebook/callback",
-      "_self"
-    );
+  const handleFBLogin = (accessToken) => {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+    axios.post("/auth/facebook/token").then((result) => {
+      const user = {
+        email: result.data.user.email,
+        first_name: result.data.user.first_name,
+        last_name: result.data.user.last_name,
+        full_name: result.data.user.full_name,
+        token: `Bearer ${accessToken}`,
+        id: result.data.user.id,
+        _id: result.data.user._id,
+        profilePicUrl: result.data.user.profilePicUrl,
+        facebookId: result.data.user.facebookId,
+      };
+      setUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate("/");
+    });
   };
 
   const handleTestDrive = () => {
@@ -195,7 +208,7 @@ export default function SignIn({ user, setUser }) {
             <FacebookLogin
               appId="412944714298001"
               onSuccess={(response) => {
-                handleFBLogin();
+                handleFBLogin(response.accessToken);
               }}
               onFail={(error) => {
                 console.log("Login Failed!", error);
