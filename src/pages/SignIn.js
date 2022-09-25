@@ -12,7 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import FacebookLogin from "@greatsumini/react-facebook-login";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import axios from "../utils/axios";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -40,6 +40,12 @@ export default function SignIn({ user, setUser }) {
       return;
     }
   }, [user, navigate]);
+
+  const componentClicked = () => {};
+
+  const responseFacebook = (res) => {
+    handleFBLogin(res.accessToken);
+  };
 
   const handleFBLogin = (accessToken) => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
@@ -207,24 +213,18 @@ export default function SignIn({ user, setUser }) {
             </Button>
             <FacebookLogin
               appId="412944714298001"
-              onSuccess={(response) => {
-                handleFBLogin(response.accessToken);
-              }}
-              onFail={(error) => {
-                console.log("Login Failed!", error);
-              }}
-              onProfileSuccess={(response) => {
-                console.log("Get Profile Success!", response);
-              }}
-              render={({ onClick }) => (
+              fields="name,email,picture"
+              onClick={componentClicked}
+              callback={responseFacebook}
+              render={(renderProps) => (
                 <Button
-                  onClick={onClick}
+                  onClick={renderProps.onClick}
                   variant="contained"
                   fullWidth
                   startIcon={<FacebookIcon />}
                   sx={{ mb: 2 }}
                 >
-                  Login with Facebook
+                  Log in with Facebook
                 </Button>
               )}
             />
