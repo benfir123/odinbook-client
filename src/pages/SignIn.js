@@ -41,11 +41,10 @@ export default function SignIn({ user, setUser }) {
     }
   }, [user, navigate]);
 
-  const handleFBLogin = (userID, accessToken) => {
+  const handleFBLogin = (responseObj) => {
     axios
       .post("/auth/facebook", {
-        userID,
-        accessToken,
+        responseObj,
       })
       .then((result) => {
         const user = {
@@ -211,6 +210,7 @@ export default function SignIn({ user, setUser }) {
             </Button>
             <FacebookLogin
               appId="412944714298001"
+              fields="first_name,last_name,email,picture"
               onSuccess={(response) => {
                 console.log("Login Success!", response);
               }}
@@ -219,6 +219,7 @@ export default function SignIn({ user, setUser }) {
               }}
               onProfileSuccess={(response) => {
                 console.log("Get Profile Success!", response);
+                handleFBLogin(response);
               }}
               render={({ onClick }) => (
                 <Button
