@@ -206,13 +206,12 @@ export default function SignIn({ user, setUser }) {
               appId="412944714298001"
               fields="first_name,last_name,email,picture"
               onSuccess={(response) => {
-                console.log("Login Success!", response);
+                console.log("Login Success!");
               }}
               onFail={(error) => {
                 console.log("Login Failed!", error);
               }}
               onProfileSuccess={(response) => {
-                console.log("Get Profile Success!", response);
                 handleFBLogin(response);
               }}
               render={({ onClick }) => (
