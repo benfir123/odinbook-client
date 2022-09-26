@@ -12,7 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import FacebookLogin from "@greatsumini/react-facebook-login";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import axios from "../utils/axios";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -40,10 +40,6 @@ export default function SignIn({ user, setUser }) {
       return;
     }
   }, [user, navigate]);
-
-  const responseFacebook = (res) => {
-    console.log(res);
-  };
 
   const handleFBLogin = (userID, accessToken) => {
     axios
@@ -215,11 +211,18 @@ export default function SignIn({ user, setUser }) {
             </Button>
             <FacebookLogin
               appId="412944714298001"
-              autoLoad={false}
-              callback={responseFacebook}
-              render={(renderProps) => (
+              onSuccess={(response) => {
+                console.log("Login Success!", response);
+              }}
+              onFail={(error) => {
+                console.log("Login Failed!", error);
+              }}
+              onProfileSuccess={(response) => {
+                console.log("Get Profile Success!", response);
+              }}
+              render={(onClick) => (
                 <Button
-                  onClick={renderProps.onClick}
+                  onClick={onClick}
                   variant="contained"
                   fullWidth
                   startIcon={<FacebookIcon />}
