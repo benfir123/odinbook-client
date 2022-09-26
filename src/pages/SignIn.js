@@ -41,28 +41,28 @@ export default function SignIn({ user, setUser }) {
     }
   }, [user, navigate]);
 
-  const handleFBLogin = (responseObj) => {
-    axios
-      .post("/auth/facebook", {
-        responseObj,
-      })
-      .then((result) => {
-        const user = {
-          email: result.data.user.email,
-          first_name: result.data.user.first_name,
-          last_name: result.data.user.last_name,
-          full_name: result.data.user.full_name,
-          token: `Bearer ${accessToken}`,
-          id: result.data.user.id,
-          _id: result.data.user._id,
-          profile_pic_url: result.data.user.profile_pic_url,
-          facebookId: result.data.user.facebookId,
-        };
-        setUser(user);
-        localStorage.setItem("user", JSON.stringify(user));
-        navigate("/");
-      });
-  };
+  // const handleFBLogin = (responseObj) => {
+  //   axios
+  //     .post("/auth/facebook", {
+  //       responseObj,
+  //     })
+  //     .then((result) => {
+  //       const user = {
+  //         email: result.data.user.email,
+  //         first_name: result.data.user.first_name,
+  //         last_name: result.data.user.last_name,
+  //         full_name: result.data.user.full_name,
+  //         token: `Bearer ${accessToken}`,
+  //         id: result.data.user.id,
+  //         _id: result.data.user._id,
+  //         profile_pic_url: result.data.user.profile_pic_url,
+  //         facebookId: result.data.user.facebookId,
+  //       };
+  //       setUser(user);
+  //       localStorage.setItem("user", JSON.stringify(user));
+  //       navigate("/");
+  //     });
+  // };
 
   const handleTestDrive = () => {
     setLoadingTestUser(true);
