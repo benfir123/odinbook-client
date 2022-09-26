@@ -41,30 +41,32 @@ export default function SignIn({ user, setUser }) {
     }
   }, [user, navigate]);
 
-  const componentClicked = () => {};
-
   const responseFacebook = (res) => {
-    handleFBLogin(res.accessToken);
+    console.log(res);
   };
 
-  const handleFBLogin = (accessToken) => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-    axios.post("/auth/facebook/token").then((result) => {
-      const user = {
-        email: result.data.user.email,
-        first_name: result.data.user.first_name,
-        last_name: result.data.user.last_name,
-        full_name: result.data.user.full_name,
-        token: `Bearer ${accessToken}`,
-        id: result.data.user.id,
-        _id: result.data.user._id,
-        profile_pic_url: result.data.user.profile_pic_url,
-        facebookId: result.data.user.facebookId,
-      };
-      setUser(user);
-      localStorage.setItem("user", JSON.stringify(user));
-      navigate("/");
-    });
+  const handleFBLogin = (userID, accessToken) => {
+    axios
+      .post("/auth/facebook", {
+        userID,
+        accessToken,
+      })
+      .then((result) => {
+        const user = {
+          email: result.data.user.email,
+          first_name: result.data.user.first_name,
+          last_name: result.data.user.last_name,
+          full_name: result.data.user.full_name,
+          token: `Bearer ${accessToken}`,
+          id: result.data.user.id,
+          _id: result.data.user._id,
+          profile_pic_url: result.data.user.profile_pic_url,
+          facebookId: result.data.user.facebookId,
+        };
+        setUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+        navigate("/");
+      });
   };
 
   const handleTestDrive = () => {
@@ -213,8 +215,7 @@ export default function SignIn({ user, setUser }) {
             </Button>
             <FacebookLogin
               appId="412944714298001"
-              fields="name,email,picture"
-              onClick={componentClicked}
+              autoLoad={false}
               callback={responseFacebook}
               render={(renderProps) => (
                 <Button
