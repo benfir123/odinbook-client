@@ -55,7 +55,6 @@ const Newsfeed = ({ user }) => {
     axios
       .post("/posts", { text: postText })
       .then((result) => {
-        console.log(result.data);
         const updatedPosts = [...posts, result.data.post];
         setPostText("");
         setPosts(sortPosts(updatedPosts));
