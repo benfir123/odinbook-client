@@ -220,7 +220,7 @@ export default function SignIn({ user, setUser }) {
               onProfileSuccess={(response) => {
                 console.log("Get Profile Success!", response);
               }}
-              render={(onClick) => (
+              render={({ onClick }) => (
                 <Button
                   onClick={onClick}
                   variant="contained"
