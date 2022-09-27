@@ -1,4 +1,4 @@
-# Odinbook
+# Odinbook Client
 
 Odinbook is a social media clone done as the final deliverable for the popular full stack web development course: The Odin Project.
 
