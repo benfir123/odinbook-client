@@ -1,6 +1,10 @@
-# Getting Started with Create React App
+# Odinbook
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Odinbook is a social media clone done as the final deliverable for the popular full stack web development course: The Odin Project.
+
+[Live Demo](https://benfir123.github.io/odinbook-client/) :point_left:
+
+[API repository](https://github.com/benfir123/odinbook-api)
 
 ## Available Scripts
 
